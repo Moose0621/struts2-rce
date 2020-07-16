@@ -4,24 +4,28 @@
 
 Completely based on https://github.com/piesecurity/apache-struts2-CVE-2017-5638
 
+A realistic scenario where a reference project for a framework is deployed on a container but with terrible consequences. To familiarise yourself look at the code and compile it. Also investigate the dockerfile - does anything specific rise to get our attention?
+
+Shows how easily every day decisions and multiple vulnerabilities in chain can be leveraged.
+
 ### Usage:
 Pre-requisites:
 1. have a JDK installed,
-1. ideally have Docker installed,
-1. eventually have Python installed (can be replaced by [Jython](https://www.jython.org/))
+1. have Docker installed, Docker Desktop for Mac or Win
+1. ideally have Python installed (can be replaced by [Jython](https://www.jython.org/))
 
 To prepare:
 1. clone this repo
 1. run `./mvnw clean package` in project root
-1. run `docker build -t hack \.`
-1. run `docker run -d -p 9080:8080 hack`
+1. run `docker build -t hackme \.`
+1. run `docker run -d -p 9080:8080 hackme`
 1. once container comes online - verify by running in browser http://localhost:9080
 
 Notice: if you don't have Docker installed, you can run `./mvnw jetty:run`
 
 To begin testing RCE - run the `exploit.py` file:
 * run `python exploit.py http://localhost:9080/orders/3 "CMD"`
-* If you don't have Python, download [Jython Standalone](https://www.jython.org/downloads.html) and\
+* If you don't have Python, use the [Jython Standalone](https://www.jython.org/downloads.html) and\
   run `java -jar jython*.jar exploit.py http://localhost:9080/orders/3 "CMD"`
 
 Try with different CMDs like
